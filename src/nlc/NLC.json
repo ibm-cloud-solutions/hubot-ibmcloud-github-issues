@@ -1,0 +1,49 @@
+{   "name": "IBMcloudGithubIssues",
+    "version": "0.0.1",
+    "classes": [
+        {
+            "class": "github.issues.help",
+            "emittarget": "github.issues.help",
+            "texts": [
+				"I want help with github issues.",
+		  		"Can you help me with github issues?",
+		  		"Please help me with github issues.",
+		  		"How can I create a github issue when a crash occurs.",
+		  		"help github issues"
+            ]
+        },
+        {
+            "class": "github.issues.stop",
+            "emittarget": "github.issues.stop",
+            "texts": [
+                "Stop github issue creation",
+                "Don't create github issues anymore",
+                "End github issue creation",
+				"stop creating a github issue on a crash"
+            ]
+        },
+        {
+            "class": "github.issues.open",
+            "emittarget": "github.issues.open",
+            "texts": [
+                "Create a github issue",
+                "Open an issue on an app crash",
+				"Enable github issue creation",
+                "Begin tracking application crashes with github issues",
+				"start creating issues against"
+            ],
+			"parameters" : [
+				{
+					"name": "repo",
+					"type": "reponame",
+					 "prompt": "OK. What is the repository you want to open issues against?"
+				},
+	 			{
+	 				"name": "user",
+	 				"type": "repouser",
+	 				 "prompt": "OK. What is the username associated with the github repository?"
+	 			}
+			 ]
+        }
+    ]
+}

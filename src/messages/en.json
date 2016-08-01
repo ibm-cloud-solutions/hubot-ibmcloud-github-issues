@@ -1,0 +1,16 @@
+{
+	"conversation.timed.out": "Our conversation timed out.  You can try again later.",
+	"conversation.try.again.or.exit": "That is not one of the choices. Try again, or type *exit*().",
+	"conversation.try.again.yes.no": "That is not one of the choices. Try *yes* or *no*.",
+
+	"github.issues.crash.detected": "Crash detected for *%s*. Registered *%s*.",
+	"github.issues.stop.already": "I'm not currently opening any issues.",
+	"github.issues.stop.success": "I will not open any more issues.",
+	"github.issues.will.open.for.crash": "I'll open a defect in *%s/%s* when any apps crash.",
+
+	"help.github.issues.create": "Creates a Github issue whenever an app crashes.",
+	"help.github.issues.stop": "Stops the creation of github issues.",
+
+	"cognitive.parse.problem.user": "I'm having problems understanding the provided username. To start issue creation use *issue create against [name]/[repo] when apps crash*",
+	"cognitive.parse.problem.repo": "I'm having problems understanding the provided repository name. To start issue creation use *issue create against [name]/[repo] when apps crash*"
+}
