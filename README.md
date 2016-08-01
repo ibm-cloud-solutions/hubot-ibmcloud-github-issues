@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/ibm-cloud-solutions/hubot-ibmcloud-github-issues.svg?branch=master)](https://travis-ci.org/ibm-cloud-solutions/hubot-ibmcloud-github-issues)
+[![Coverage Status](https://coveralls.io/repos/github/ibm-cloud-solutions/hubot-ibmcloud-github-issues/badge.svg?branch=cleanup)](https://coveralls.io/github/ibm-cloud-solutions/hubot-ibmcloud-github-issues?branch=cleanup)
+[![Dependency Status](https://dependencyci.com/github/ibm-cloud-solutions/hubot-ibmcloud-github-issues/badge)](https://dependencyci.com/github/ibm-cloud-solutions/hubot-ibmcloud-github-issues)
+[![npm](https://img.shields.io/npm/v/hubot-ibmcloud-github-issues.svg?maxAge=2592000)](https://www.npmjs.com/package/hubot-ibmcloud-github-issues)
+
 # hubot-ibmcloud-github-issues
 
 Script package that exposes the IBM Cloud Github issue creation functionality through Hubot.
@@ -10,7 +15,7 @@ Script package that exposes the IBM Cloud Github issue creation functionality th
   * [License](#license)
   * [Contribute](#contribute)
 
-## Usage <a id="usage"></a>
+## Usage
 
 If you are new to Hubot visit the [getting started](https://hubot.github.com/docs/) content to get a basic bot up and running.  Next, follow these steps for adding this external script into your hubot:
 
@@ -30,20 +35,20 @@ If you are new to Hubot visit the [getting started](https://hubot.github.com/doc
 5. Start up your bot & off to the races!
 
 
-## Commands <a id="commands"></a>
+## Commands
 - `hubot issue create against [name]/[repo] when apps crash` - Creates a Github issue whenever an app crashes.
 - `hubot issue stop creation` - Stops the creation of github issues.
 - `hubot issue(s) help` - Show available space commands.
 
-## Hubot Adapter Setup <a id="hubot-adapter-setup"></a>
+## Hubot Adapter Setup
 
 Hubot supports a variety of adapters to connect to popular chat clients.  For more feature rich experiences you can setup the following adapters:
-- [Slack setup](./docs/adapters/slack.md)
-- [Facebook Messenger setup](./docs/adapters/facebook.md)
+- [Slack setup](https://github.com/ibm-cloud-solutions/hubot-ibmcloud-github-issues/blob/master/docs/adapters/slack.md)
+- [Facebook Messenger setup](https://github.com/ibm-cloud-solutions/hubot-ibmcloud-github-issues/blob/master/docs/adapters/facebook.md)
 
-## Development <a id="development"></a>
+## Development
 
-Please refer to the [CONTRIBUTING.md](./CONTRIBUTING.md) before starting any work.  Steps for running this script for development purposes:
+Please refer to the [CONTRIBUTING.md](https://github.com/ibm-cloud-solutions/hubot-ibmcloud-github-issues/blob/master/CONTRIBUTING.md) before starting any work.  Steps for running this script for development purposes:
 
 ### Configuration Setup
 
@@ -73,13 +78,13 @@ Hubot supports a variety of adapters to connect to popular chat clients.
 
 If you just want to use:
  - Terminal: run `npm run start`
- - [Slack: link to setup instructions](docs/adapters/slack.md)
- - [Facebook Messenger: link to setup instructions](docs/adapters/facebook.md)
+ - [Slack: link to setup instructions](https://github.com/ibm-cloud-solutions/hubot-ibmcloud-github-issues/blob/master/docs/adapters/slack.md)
+ - [Facebook Messenger: link to setup instructions](https://github.com/ibm-cloud-solutions/hubot-ibmcloud-github-issues/blob/master/docs/adapters/facebook.md)
 
-## License <a id="license"></a>
+## License
 
-See [LICENSE.txt](./LICENSE.txt) for license information.
+See [LICENSE.txt](https://github.com/ibm-cloud-solutions/hubot-ibmcloud-github-issues/blob/master/LICENSE.txt) for license information.
 
-## Contribute <a id="contribute"></a>
+## Contribute
 
-Please check out our [Contribution Guidelines](./CONTRIBUTING.md) for detailed information on how you can lend a hand.
+Please check out our [Contribution Guidelines](https://github.com/ibm-cloud-solutions/hubot-ibmcloud-github-issues/blob/master/CONTRIBUTING.md) for detailed information on how you can lend a hand.
