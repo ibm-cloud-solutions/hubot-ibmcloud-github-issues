@@ -3,7 +3,7 @@
     "classes": [
         {
             "class": "github.issues.help",
-			"description": "Help with GitHub issues",
+            "description": "Help with GitHub issues",
             "emittarget": "github.issues.help",
             "texts": [
 				"Help me with github issues.",
@@ -14,7 +14,7 @@
         },
         {
             "class": "github.issues.stop",
-			"description": "Stop GitHub issue creation",
+            "description": "Stop GitHub issue creation",
             "emittarget": "github.issues.stop",
             "texts": [
                 "Stop github issue creation",
@@ -25,7 +25,7 @@
         },
         {
             "class": "github.issues.open",
-			"description": "Create a GitHub issue",
+            "description": "Create a GitHub issue",
             "emittarget": "github.issues.open",
             "texts": [
                 "Create a github issue",
