@@ -3,32 +3,34 @@
     "classes": [
         {
             "class": "github.issues.help",
+            "description": "Help with GitHub issues",
             "emittarget": "github.issues.help",
             "texts": [
-				"I want help with github issues.",
-		  		"Can you help me with github issues?",
-		  		"Please help me with github issues.",
+				"Help me with github issues.",
+		  		"Can you help me with GitHub issues?",
 		  		"How can I create a github issue when a crash occurs.",
 		  		"help github issues"
             ]
         },
         {
             "class": "github.issues.stop",
+            "description": "Stop GitHub issue creation",
             "emittarget": "github.issues.stop",
             "texts": [
                 "Stop github issue creation",
-                "Don't create github issues anymore",
+                "Don't create GitHub issues anymore",
                 "End github issue creation",
 				"stop creating a github issue on a crash"
             ]
         },
         {
             "class": "github.issues.open",
+            "description": "Create a GitHub issue",
             "emittarget": "github.issues.open",
             "texts": [
                 "Create a github issue",
                 "Open an issue on an app crash",
-				"Enable github issue creation",
+				"Enable GitHub issue creation",
                 "Begin tracking application crashes with github issues",
 				"start creating issues against"
             ],
