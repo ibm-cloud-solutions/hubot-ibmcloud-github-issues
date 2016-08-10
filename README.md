@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/ibm-cloud-solutions/hubot-ibmcloud-github-issues.svg?branch=master)](https://travis-ci.org/ibm-cloud-solutions/hubot-ibmcloud-github-issues)
-[![Coverage Status](https://coveralls.io/repos/github/ibm-cloud-solutions/hubot-ibmcloud-github-issues/badge.svg?branch=cleanup)](https://coveralls.io/github/ibm-cloud-solutions/hubot-ibmcloud-github-issues?branch=cleanup)
+[![Coverage Status](https://coveralls.io/repos/github/ibm-cloud-solutions/hubot-ibmcloud-github-issues/badge.svg?branch=master)](https://coveralls.io/github/ibm-cloud-solutions/hubot-ibmcloud-github-issues?branch=master)
 [![Dependency Status](https://dependencyci.com/github/ibm-cloud-solutions/hubot-ibmcloud-github-issues/badge)](https://dependencyci.com/github/ibm-cloud-solutions/hubot-ibmcloud-github-issues)
 [![npm](https://img.shields.io/npm/v/hubot-ibmcloud-github-issues.svg?maxAge=2592000)](https://www.npmjs.com/package/hubot-ibmcloud-github-issues)
 
