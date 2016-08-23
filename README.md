@@ -32,6 +32,8 @@ If you are new to Hubot visit the [getting started](https://hubot.github.com/doc
         HUBOT_GITHUB_TOKEN=<GitHub personal access token>
         HUBOT_GITHUB_DOMAIN=<GitHub domain, omit for public GitHub>
 
+   [Click here for help getting your GitHub Token.](https://help.github.com/articles/creating-an-access-token-for-command-line-use/)
+
 5. Start up your bot & off to the races!
 
 
