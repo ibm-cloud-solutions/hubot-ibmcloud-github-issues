@@ -3,7 +3,7 @@
   "version": "0.0.12",
   "description": "hubot - create github issues for ibmcloud",
   "main": "index.js",
-  "respository": {
+  "repository": {
     "url": "https://github.com/ibm-cloud-solutions/hubot-ibmcloud-github-issues",
     "type": "git"
   },
