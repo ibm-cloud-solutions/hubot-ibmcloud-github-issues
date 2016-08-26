@@ -23,19 +23,20 @@ If you are new to Hubot visit the [getting started](https://hubot.github.com/doc
 1. `cd` into your hubot directory
 2. Install this package via `npm install hubot-ibmcloud-github-issues --save`
 3. Add `hubot-ibmcloud-github-issues` to your `external-scripts.json`
-4. Add the necessary environment variables:
+4. Fetch your GitHub token. [Click here for help.](https://help.github.com/articles/creating-an-access-token-for-command-line-use/)
+5. Add the necessary environment variables:
+ ```shell
+ HUBOT_BLUEMIX_API=<Bluemix API URL>
+ HUBOT_BLUEMIX_ORG=<Bluemix Organization>
+ HUBOT_BLUEMIX_SPACE=<Bluemix space>
+ HUBOT_BLUEMIX_USER=<Bluemix User ID>
+ HUBOT_BLUEMIX_PASSWORD=<Password for the Bluemix use>
+ HUBOT_GITHUB_TOKEN=<GitHub personal access token>
+ HUBOT_GITHUB_DOMAIN=<GitHub domain, omit for public GitHub>
+ ```
+   **Note**: GitHub issues opened will created under the account associated with the token.
 
-        HUBOT_BLUEMIX_API=<Bluemix API URL>
-        HUBOT_BLUEMIX_ORG=<Bluemix Organization>
-        HUBOT_BLUEMIX_SPACE=<Bluemix space>
-        HUBOT_BLUEMIX_USER=<Bluemix User ID>
-        HUBOT_BLUEMIX_PASSWORD=<Password for the Bluemix use>
-        HUBOT_GITHUB_TOKEN=<GitHub personal access token>
-        HUBOT_GITHUB_DOMAIN=<GitHub domain, omit for public GitHub>
-
-   [Click here for help getting your GitHub Token.](https://help.github.com/articles/creating-an-access-token-for-command-line-use/)
-
-5. Start up your bot & off to the races!
+6. Start up your bot & off to the races!
 
 
 ## Commands
