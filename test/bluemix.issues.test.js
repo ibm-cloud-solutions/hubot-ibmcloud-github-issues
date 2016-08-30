@@ -14,7 +14,7 @@ const mockUtils = require('./mock.utils.cf.js');
 const mockESUtils = require('./mock.utils.es.js');
 const mockGithubUtils = require('./mock.utils.github.js');
 
-var i18n = new (require('i18n-2'))({
+const i18n = new (require('i18n-2'))({
 	locales: ['en'],
 	extension: '.json',
 	// Add more languages to the list of locales when the files are created.
@@ -125,32 +125,32 @@ describe('Interacting with Github Issue Creation via Reg Ex', function() {
 
 	context('test interval event scan', function() {
 		it('should run', function() {
-			// var fakeBrain = {
+			// const fakeBrain = {
 			// 	set: function(id, value) {},
 			// 	get: function(id){ return undefined; }
 			// };
 			// room.robot.brain = fakeBrain;
-			var user = 'user';
-			var repo = 'repo';
-			var res = {};
+			const user = 'user';
+			const repo = 'repo';
+			const res = {};
 			issuesRewire.__get__('intervalEventScan')(room.robot, res, user, repo);
 		});
 	});
 
 	context('test processCrashLogs', function() {
 		it('should run', function() {
-			// var fakeBrain = {
+			// const fakeBrain = {
 			// 	set: function(id, value) {},
 			// 	get: function(id){ return undefined; }
 			// };
 			// room.robot.brain = fakeBrain;
-			var user = 'user';
-			var repo = 'repo';
-			var res = {
+			const user = 'user';
+			const repo = 'repo';
+			const res = {
 				reply: function(str) {},
 				send: function(str) {}
 			};
-			var resource = {
+			const resource = {
 				entity: {
 					actee_name: 'event1ActeeName',
 					timestamp: '2016-04-22T19:33:32Z',
@@ -165,7 +165,7 @@ describe('Interacting with Github Issue Creation via Reg Ex', function() {
 					}
 				}
 			};
-			var result = {};
+			const result = {};
 			issuesRewire.__get__('processRecentCrashLogs')(room.robot, res, user, repo, resource, result);
 		});
 	});
