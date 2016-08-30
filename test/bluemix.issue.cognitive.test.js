@@ -13,7 +13,7 @@ const mockUtils = require('./mock.utils.cf.js');
 const mockESUtils = require('./mock.utils.es.js');
 const mockGithubUtils = require('./mock.utils.github.js');
 
-var i18n = new (require('i18n-2'))({
+const i18n = new (require('i18n-2'))({
 	locales: ['en'],
 	extension: '.json',
 	// Add more languages to the list of locales when the files are created.
@@ -59,7 +59,7 @@ describe('Interacting with Github Issue Creation via Natural Language', function
 				done();
 			});
 
-			var res = { message: {text: 'Please help me with issue creation on app crash', user: {id: 'anId'}}, response: room };
+			const res = { message: {text: 'Please help me with issue creation on app crash', user: {id: 'anId'}}, response: room };
 			room.robot.emit('github.issues.help', res, {});
 		});
 	});
@@ -72,7 +72,7 @@ describe('Interacting with Github Issue Creation via Natural Language', function
 				done();
 			});
 
-			var res = { message: {text: 'stop issue creation', user: {id: 'anId'}}, response: room };
+			const res = { message: {text: 'stop issue creation', user: {id: 'anId'}}, response: room };
 			room.robot.emit('github.issues.stop', res, {});
 		});
 	});
@@ -85,7 +85,7 @@ describe('Interacting with Github Issue Creation via Natural Language', function
 				done();
 			});
 
-			var res = { message: {text: 'start issue creation for user/repo', user: {id: 'anId'}}, response: room };
+			const res = { message: {text: 'start issue creation for user/repo', user: {id: 'anId'}}, response: room };
 			room.robot.emit('github.issues.open', res, {user: 'user', repo: 'repo'});
 		});
 		it('should fail due to missing user parameter ', function(done) {
@@ -97,7 +97,7 @@ describe('Interacting with Github Issue Creation via Natural Language', function
 				}
 			});
 
-			var res = { message: {text: 'open issue against repo', user: {id: 'mimiron'}}, response: room };
+			const res = { message: {text: 'open issue against repo', user: {id: 'mimiron'}}, response: room };
 			room.robot.emit('github.issues.open', res, {repo: 'repo'});
 		});
 
@@ -110,7 +110,7 @@ describe('Interacting with Github Issue Creation via Natural Language', function
 				}
 			});
 
-			var res = { message: {text: 'open issue against user', user: {id: 'mimiron'}}, response: room };
+			const res = { message: {text: 'open issue against user', user: {id: 'mimiron'}}, response: room };
 			room.robot.emit('github.issues.open', res, {user: 'user'});
 		});
 	});
