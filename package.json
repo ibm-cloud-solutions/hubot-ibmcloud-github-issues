@@ -1,6 +1,6 @@
 {
   "name": "hubot-ibmcloud-github-issues",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "hubot - create github issues for ibmcloud",
   "main": "index.js",
   "repository": {
@@ -47,9 +47,9 @@
   },
   "peerDependencies": {
     "hubot": "^2.19.0",
-	"hubot-cf-convenience": ">=0.0.13",
+    "hubot-cf-convenience": ">=0.0.13",
     "hubot-ibmcloud-activity-emitter": ">=0.0.3",
-	"hubot-ibmcloud-cognitive-lib": ">=0.0.40",
+    "hubot-ibmcloud-cognitive-lib": ">=0.0.40",
     "hubot-ibmcloud-utils": ">=0.0.14",
     "i18n-2": "^0.6.3",
     "lodash": "^4.13.1"
