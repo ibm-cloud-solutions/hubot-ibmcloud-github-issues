@@ -46,6 +46,51 @@
 	 				 "prompt": "OK. What is the username associated with the github repository?"
 	 			}
 			 ]
-        }
+        },
+		{
+			"class": "github.subscribe",
+			"description": "Start monitoring GitHub events",
+			"emittarget": "github.subscribe",
+			"texts": [
+				"Help me monitor GitHub events.",
+				"Can you help me monitor for GitHub events?",
+				"Monitor GitHub events",
+				"Subscribe to GitHub events"
+			],
+			"parameters" : [
+				{
+					"name": "repo",
+					"type": "reponame",
+					 "prompt": "OK. What is the repository you want to open issues against?"
+				},
+	 			{
+	 				"name": "user",
+	 				"type": "repouser",
+	 				 "prompt": "OK. What is the username associated with the github repository?"
+	 			}
+			 ]
+		},
+		{
+			"class": "github.unsubscribe",
+			"description": "Stop monitoring GitHub events",
+			"emittarget": "github.unsubscribe",
+			"texts": [
+				"Stop monitoring GitHub events.",
+				"Can you help me stop monitoring GitHub events?",
+				"Unsububscribe to GitHub events"
+			],
+			"parameters" : [
+				{
+					"name": "repo",
+					"type": "reponame",
+					 "prompt": "OK. What is the repository you want to open issues against?"
+				},
+	 			{
+	 				"name": "user",
+	 				"type": "repouser",
+	 				 "prompt": "OK. What is the username associated with the github repository?"
+	 			}
+			 ]
+		}
     ]
 }

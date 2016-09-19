@@ -64,7 +64,8 @@
     "index.js"
   ],
   "dependencies": {
-    "dateformat": "^1.0.12",
-    "github": "^0.2.4"
+   "dateformat": "^1.0.12",
+    "github": "^0.2.4",
+    "request": "^2.74.0"
   }
 }

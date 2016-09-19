@@ -10,9 +10,6 @@
 //	 HUBOT_GITHUB_DOMAIN The domain for the github repo (defaults to github.com)
 //	 HUBOT_GITHUB_TOKEN the github access token that will be used for creating issues
 //
-// Commands:
-//   hubot issue help - Show available commands in the issue category.
-//
 // Author:
 //	nsandona
 //
