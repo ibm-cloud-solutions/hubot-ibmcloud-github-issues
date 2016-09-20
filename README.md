@@ -5,7 +5,9 @@
 
 # hubot-ibmcloud-github-issues
 
-Script package that exposes the IBM Cloud Github issue creation functionality through Hubot.
+Script package that enables you to integrate Hubot with several features of GitHub.
+  * Automatica creation of GitHub issues based on various events.
+  * Monitor your GitHub repository for newly opened issues, commits and pull requests, and posts them to your chat client.
 
 ## Getting Started
   * [Usage](#usage)
@@ -40,9 +42,11 @@ If you are new to Hubot visit the [getting started](https://hubot.github.com/doc
 
 
 ## Commands
-- `hubot issue create against [name]/[repo] when apps crash` - Creates a Github issue whenever an app crashes.
-- `hubot issue stop creation` - Stops the creation of github issues.
-- `hubot issue(s) help` - Show available space commands.
+- `hubot github issue create against [name]/[repo] when apps crash` - Creates a Github issue whenever an app crashes.
+- `hubot github issue stop creation` - Stops the creation of github issues.
+- `hubot github help` - Show available space commands.
+- `hubot github subscribe [user]/[repo]` - Subscribe to GitHub events.
+- `hubot github unsubscribe [user]/[repo] ` - Unsubscribe from GitHub events.
 
 ## Hubot Adapter Setup
 
