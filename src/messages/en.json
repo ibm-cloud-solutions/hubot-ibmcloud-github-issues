@@ -26,7 +26,6 @@
 	"github.subscribe.error.fetching.webhooks": "An error occurred fetching subscriptions for user *%s* in the *%s* repository.",
 	"github.subscribe.no.webhooks": "No GitHub subscriptions were found for user *%s* in the *%s* repository.",
 
-
 	"help.github.issues.create": "Creates a GitHub issue whenever an app crashes.",
 	"help.github.issues.stop": "Stops the creation of GitHub issues.",
 	"help.github.subscribe": "Subscribe to GitHub events.",

@@ -42,8 +42,6 @@ const i18n = new (require('i18n-2'))({
 // At some point we need to toggle this setting based on some user input.
 i18n.setLocale('en');
 
-const APP_HELP = /github+(|s)\s+help/i;
-
 module.exports = (robot) => {
 
 	// Natural Language match
@@ -53,7 +51,7 @@ module.exports = (robot) => {
 	});
 
 	// RegEx match
-	robot.respond(APP_HELP, { id: 'github.help' }, function(res) {
+	robot.respond(/github+(|s)\s+help/i, { id: 'github.help' }, function(res) {
 		robot.logger.debug(`${TAG}: RegEx match. res.message.text=${res.message.text}.`);
 		help(robot, res);
 	});

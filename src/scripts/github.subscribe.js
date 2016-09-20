@@ -2,11 +2,6 @@
 //	 Enables user to monitor events for a GitHub repository.
 //
 // Configuration:
-//	 HUBOT_BLUEMIX_API Bluemix API URL
-//	 HUBOT_BLUEMIX_ORG Bluemix Organization
-//	 HUBOT_BLUEMIX_SPACE Bluemix space
-//	 HUBOT_BLUEMIX_USER Bluemix User ID
-//	 HUBOT_BLUEMIX_PASSWORD Password for the Bluemix User
 //	 HUBOT_GITHUB_DOMAIN The domain for the github repo (defaults to github.com)
 //	 HUBOT_GITHUB_TOKEN the github access token that will be used for creating issues
 //
@@ -27,11 +22,8 @@ const TAG = path.basename(__filename);
 
 const webhookHost = process.env.VCAP_APP_HOST || process.env.IP || 'localhost';
 const webhookPort = process.env.VCAP_APP_PORT || process.env.PORT || 3000;
+const webhookUrl = 'http://' + webhookHost + ':' + webhookPort + '/github/webhook';
 const githubHost = process.env.HUBOT_GITHUB_DOMAIN || 'api.github.com';
-
-
-// const gh = require('../lib/github');
-// const activity = require('hubot-ibmcloud-activity-emitter');
 
 // --------------------------------------------------------------
 // i18n (internationalization)
@@ -52,109 +44,9 @@ i18n.setLocale('en');
 
 module.exports = function(robot) {
 
-	// --------------------------------------------------------------
-	// Listen for webhook events from Github.
-	// --------------------------------------------------------------
-	robot.router.post('/github/webhook', (req, res) => {
-		// Close the loop with the sender.
-		res.send('OK');
-
-		let attachments = [];
-		let payload = JSON.parse(req.body);
-		let eventType = '';
-		if (req.headers) {
-			eventType = req.headers['x-github-event'];
-		}
-		robot.logger.debug(`${TAG}: Webhook event received: ${eventType}`);
-
-		// Handle push event (commit was made)
-		// https://developer.github.com/v3/activity/events/types/#pushevent
-		if (eventType === 'push') {
-			// There could be >1 commits, so iterate.
-			for (let i = 0; i < payload.commits; i++) {
-				// Create the alert.
-				attachments.push({
-					fallback: i18n.__('github.subscribe.alert.code.delivered'),
-					title: i18n.__('github.subscribe.alert.code.delivered'),
-					fields: [{
-						title: i18n.__('github.subscribe.alert.author'),
-						value: payload.commits[i].committer,
-						short: true
-					}, {
-						title: i18n.__('github.subscribe.alert.message'),
-						value: payload.commits[i].message,
-						short: true
-					}, {
-						title: i18n.__('github.subscribe.alert.url'),
-						value: payload.commits[i].url,
-						short: true
-					}]
-				});
-			}
-			// Emit the app status as an attachment
-			robot.emit('ibmcloud.formatter', { response: res, attachments });
-		}
-
-		// Handle a pull request event.
-		// https://developer.github.com/v3/activity/events/types/#pullrequestevent
-		else if (eventType === 'pull_request' && payload.action === 'opened') {
-			// Create the alert.
-			attachments.push({
-				fallback: i18n.__('github.subscribe.alert.pull.request'),
-				title: i18n.__('github.subscribe.alert.pull.request'),
-				fields: [{
-					title: i18n.__('github.subscribe.alert.title'),
-					value: payload.pull_request.title,
-					short: true
-				}, {
-					title: i18n.__('github.subscribe.alert.repository'),
-					value: payload.pull_request.base.repo.full_name,
-					short: true
-				}, {
-					title: i18n.__('github.subscribe.alert.originator'),
-					value: payload.pull_request.user.login,
-					short: true
-				}, {
-					title: i18n.__('github.subscribe.alert.url'),
-					value: payload.pull_request._links.self,
-					short: true
-				}]
-			});
-			// Emit the app status as an attachment
-			robot.emit('ibmcloud.formatter', { response: res, attachments });
-		}
-
-		// Handle an issue open event
-		// https://developer.github.com/v3/activity/events/types/#issuesevent
-		else if (eventType === 'issue' && payload.action === 'opened') {
-			// Create the alert.
-			attachments.push({
-				fallback: i18n.__('github.subscribe.alert.issue.opened'),
-				title: i18n.__('github.subscribe.alert.issue opened'),
-				fields: [{
-					title: i18n.__('github.subscribe.alert.title'),
-					value: payload.issue.title,
-					short: true
-				}, {
-					title: i18n.__('github.subscribe.alert.description'),
-					value: payload.issue.body,
-					short: true
-				}, {
-					title: i18n.__('github.subscribe.alert.url'),
-					value: payload.issue.url,
-					short: true
-				}]
-			});
-			// Emit the app status as an attachment
-			robot.emit('ibmcloud.formatter', { response: res, attachments });
-		}
-	});
-
 	// -------------------------------------------
-	// Subscribe
-	// -------------------------------------------
-
 	// Subscribe - Natural language match.
+	// -------------------------------------------
 	robot.on('github.subscribe', (res, parameters) => {
 		robot.logger.debug(`${TAG}: github.subscribe Natural Language match.`);
 		let user = null;
@@ -176,11 +68,13 @@ module.exports = function(robot) {
 			robot.emit('ibmcloud.formatter', { response: res, message: message});
 		}
 		if (user && repo) {
-			createWebHook(res, user, repo);
+			createWebHook(robot, res, user, repo);
 		}
 	});
 
+	// -------------------------------------------
 	// Subscribe - Command match.
+	// -------------------------------------------
 	robot.respond(/github\s+subscribe\s+([^/]+)\/([\w-_]+)/i, {id: 'github.subscribe'}, res => {
 		robot.logger.debug(`${TAG}: github.subscribe Reg Ex match.`);
 		let user = res.match[1];
@@ -224,10 +118,8 @@ module.exports = function(robot) {
 	});
 
 	// -------------------------------------------
-	// Unubscribe
-	// -------------------------------------------
-
 	// Unsubscribe - Natural language match.
+	// -------------------------------------------
 	robot.on('github.unsubscribe', (res, parameters) => {
 		robot.logger.debug(`${TAG}: github.unsubscribe Natural Language match.`);
 		let user = null;
@@ -249,20 +141,24 @@ module.exports = function(robot) {
 			robot.emit('ibmcloud.formatter', { response: res, message: message});
 		}
 		if (user && repo) {
-			unsubscribe(res, user, repo);
+			unsubscribe(robot, res, user, repo);
 		}
 	});
 
+	// -------------------------------------------
 	// Unsubscribe - Command match.
+	// -------------------------------------------
 	robot.respond(/github\s+unsubscribe\s+([^/]+)\/([\w-_]+)/i, {id: 'github.unsubscribe'}, res => {
 		robot.logger.debug(`${TAG}: github.unsubscribe Reg Ex match.`);
 		let user = res.match[1];
 		let repo = res.match[2];
-		unsubscribe(res, user, repo);
+		unsubscribe(robot, res, user, repo);
 	});
 
+	// -------------------------------------------
 	// Unsubscribe - Common code where the real work is done.
-	function unsubscribe(res, user, repo) {
+	// -------------------------------------------
+	function unsubscribe(robot, res, user, repo) {
 		robot.logger.info(`${TAG}: Unsubscribe user=${user}, repo=${repo}.`);
 		// Get a list of all the webhooks defined in the repo.
 		getWebhookList(robot, res, user, repo, function(webhookArray) {
@@ -380,7 +276,7 @@ function createWebHook(robot, res, user, repo) {
 		active: true,
 		events: ['issues', 'pull_request', 'push'],
 		config: {
-			url: 'http://' + webhookHost + ':' + webhookPort + '/github/webhook',
+			url: webhookUrl,
 			content_type: 'json'
 		}
 	};
