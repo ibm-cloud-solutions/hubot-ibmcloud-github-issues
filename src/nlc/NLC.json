@@ -4,6 +4,7 @@
         {
             "class": "github.issues.help",
             "description": "Help with GitHub issues",
+            "confirmprompt": "Would you like help with Github issues (yes or no)?",
             "emittarget": "github.issues.help",
             "texts": [
 				"Help me with github issues.",
@@ -15,6 +16,7 @@
         {
             "class": "github.issues.stop",
             "description": "Stop GitHub issue creation",
+            "confirmprompt": "Would you like to disable creation of Github issues when Bluemix applications crash (yes or no)?",
             "emittarget": "github.issues.stop",
             "texts": [
                 "Stop github issue creation",
@@ -26,6 +28,7 @@
         {
             "class": "github.issues.open",
             "description": "Create a GitHub issue",
+            "confirmprompt": "Would you like to enable creation a Github issue at ${user}/${repo} when a Bluemix application crashes (yes or no)?",
             "emittarget": "github.issues.open",
             "texts": [
                 "Create a github issue",
