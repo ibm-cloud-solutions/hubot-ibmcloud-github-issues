@@ -23,6 +23,7 @@ const TAG = path.basename(__filename);
 const webhookHost = process.env.VCAP_APP_HOST || process.env.IP || 'localhost';
 const webhookPort = process.env.VCAP_APP_PORT || process.env.PORT || 3000;
 const webhookUrl = 'http://' + webhookHost + ':' + webhookPort + '/github/webhook';
+console.log(`${TAG}: webhookUrl: ${webhookUrl}`);
 const githubHost = process.env.HUBOT_GITHUB_DOMAIN || 'api.github.com';
 
 // --------------------------------------------------------------

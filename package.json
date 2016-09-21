@@ -8,8 +8,9 @@
     "type": "git"
   },
   "scripts": {
-    "start": "source config/env && hubot -a shell",
-    "slack": "source config/env && hubot -a slack",
+    "preinstall": "npm install hubot-ibmcloud-cognitive-lib",
+	"start": "node_modules/hubot/bin/hubot -a slack",
+	"slack": "source config/env && hubot -a slack",
     "facebook": "source config/env && hubot -a fb",
     "lint": "eslint src/**/*.js test/*.js index.js",
     "postinstall": "initDb src/nlc/NLC.json",

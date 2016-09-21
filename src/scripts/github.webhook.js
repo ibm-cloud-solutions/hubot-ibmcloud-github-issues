@@ -54,7 +54,7 @@ module.exports = function(robot) {
 // -------------------------------------------
 function handleWebhook(robot, req, res) {
 	let attachments = [];
-	let payload = JSON.parse(req.body);
+	let payload = req.body;
 	let eventType = '';
 	if (req.headers) {
 		eventType = req.headers['x-github-event'];
