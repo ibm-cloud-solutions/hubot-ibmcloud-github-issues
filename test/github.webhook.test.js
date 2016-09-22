@@ -52,82 +52,106 @@ describe('Interacting with Github Subscriptions via Reg Ex', function() {
 
 	context('Single push event received', function() {
 		it('should emit the push event attachment', function() {
-			let request = {
-				headers: {
-					'x-github-event': 'push'
-				},
-				body: JSON.stringify({
-					commits: [ {
-						committer: 'Joe',
-						message: 'JoeMessage',
-						url: 'JoeUrl'
-					} ]
-				})
-			};
-			// Start listening for emits.
-			let portendCalled = portend.once(room.robot, 'ibmcloud.formatter').then(events => {
+			// First subscribe for github events.
+			room.user.say('mimiron', '@hubot github subscribe user/repoNoWebhooks');
+			return portend.once(room.robot, 'ibmcloud.formatter').then(events => {
 				expect(events.length).to.eql(1);
-				expect(events[0].attachments).to.be.a('array');
-				expect(events[0].attachments.length).to.eql(1);
-				expect(events[0].attachments[0].fallback).to.eql('GitHub event detected: code delivered.');
-				expect(events[0].attachments[0].title).to.eql('GitHub event detected: code delivered.');
-				expect(events[0].attachments[0].fields.length).to.eql(3);
-				expect(events[0].attachments[0].fields[0].title).to.eql('Author');
-				expect(events[0].attachments[0].fields[0].value).to.eql('Joe');
-				expect(events[0].attachments[0].fields[1].title).to.eql('Message');
-				expect(events[0].attachments[0].fields[1].value).to.eql('JoeMessage');
-				expect(events[0].attachments[0].fields[2].title).to.eql('URL');
-				expect(events[0].attachments[0].fields[2].value).to.eql('JoeUrl');
+				expect(events[0].message).to.be.a('string');
+				expect(events[0].message).to.eql(i18n.__('github.subscribe.create.success'));
+			}).then(result => {
+				let request = {
+					headers: {
+						'x-github-event': 'push'
+					},
+					body: {
+						repository: {
+							name: 'RepoName',
+							hooks_url: 'hooks_url'
+						},
+						commits: [ {
+							author: { username: 'Joe' },
+							message: 'JoeMessage',
+							url: 'CommitUrl'
+						} ]
+					}
+				};
+				// Start listening for emits.
+				let portendCalled = portend.once(room.robot, 'ibmcloud.formatter').then(events => {
+					expect(events.length).to.eql(1);
+					expect(events[0].attachments).to.be.a('array');
+					expect(events[0].attachments.length).to.eql(1);
+					expect(events[0].attachments[0].fallback).to.eql('GitHub Code Delivered');
+					expect(events[0].attachments[0].title).to.eql('GitHub Code Delivered');
+					expect(events[0].attachments[0].title_link).to.eql('CommitUrl');
+					expect(events[0].attachments[0].fields.length).to.eql(3);
+					expect(events[0].attachments[0].fields[0].title).to.eql('Author');
+					expect(events[0].attachments[0].fields[0].value).to.eql('Joe');
+					expect(events[0].attachments[0].fields[1].title).to.eql('Repository');
+					expect(events[0].attachments[0].fields[1].value).to.eql('RepoName');
+					expect(events[0].attachments[0].fields[2].title).to.eql('Comment');
+					expect(events[0].attachments[0].fields[2].value).to.eql('JoeMessage');
+				});
+				// Simulate the event sent from Github.  Should trigger listener above.
+				webhookRewire.__get__('handleWebhook')(room.robot, request, null);
+				return portendCalled;
 			});
-			// Simulate the event sent from Github.  Should trigger listener above.
-			webhookRewire.__get__('handleWebhook')(room.robot, request, null);
-			return portendCalled;
 		});
 	});
 
 	context('Two push events received', function() {
 		it('should emit two push event attachments', function() {
-			let request = {
-				headers: {
-					'x-github-event': 'push'
-				},
-				body: JSON.stringify({
-					commits: [ {
-						committer: 'Joe',
-						message: 'JoeMessage',
-						url: 'JoeUrl'
-					}, {
-						committer: 'Jane',
-						message: 'JaneMessage',
-						url: 'JaneUrl'
-					} ]
-				})
-			};
-			// Start listening for emits.
-			let portendCalled = portend.once(room.robot, 'ibmcloud.formatter').then(events => {
+			// First subscribe for github events.
+			room.user.say('mimiron', '@hubot github subscribe user/repoNoWebhooks');
+			return portend.once(room.robot, 'ibmcloud.formatter').then(events => {
 				expect(events.length).to.eql(1);
-				expect(events[0].attachments).to.be.a('array');
-				expect(events[0].attachments.length).to.eql(2);
-				expect(events[0].attachments[0].fallback).to.eql('GitHub event detected: code delivered.');
-				expect(events[0].attachments[0].title).to.eql('GitHub event detected: code delivered.');
-				expect(events[0].attachments[0].fields.length).to.eql(3);
-				expect(events[0].attachments[0].fields[0].title).to.eql('Author');
-				expect(events[0].attachments[0].fields[0].value).to.eql('Joe');
-				expect(events[0].attachments[0].fields[1].title).to.eql('Message');
-				expect(events[0].attachments[0].fields[1].value).to.eql('JoeMessage');
-				expect(events[0].attachments[0].fields[2].title).to.eql('URL');
-				expect(events[0].attachments[0].fields[2].value).to.eql('JoeUrl');
-				expect(events[0].attachments[1].fields.length).to.eql(3);
-				expect(events[0].attachments[1].fields[0].title).to.eql('Author');
-				expect(events[0].attachments[1].fields[0].value).to.eql('Jane');
-				expect(events[0].attachments[1].fields[1].title).to.eql('Message');
-				expect(events[0].attachments[1].fields[1].value).to.eql('JaneMessage');
-				expect(events[0].attachments[1].fields[2].title).to.eql('URL');
-				expect(events[0].attachments[1].fields[2].value).to.eql('JaneUrl');
+				expect(events[0].message).to.be.a('string');
+				expect(events[0].message).to.eql(i18n.__('github.subscribe.create.success'));
+			}).then(result => {
+				let request = {
+					headers: {
+						'x-github-event': 'push'
+					},
+					body: {
+						repository: {
+							name: 'RepoName',
+							hooks_url: 'hooks_url'
+						},
+						commits: [ {
+							author: { username: 'Joe' },
+							url: 'CommitUrl'
+						}, {
+							author: { username: 'Jane' },
+							message: 'JaneMessage\n\nHope this part gets ignored',
+							url: 'CommitUrl'
+						} ]
+					}
+				};
+				// Start listening for emits.
+				let portendCalled = portend.once(room.robot, 'ibmcloud.formatter').then(events => {
+					expect(events.length).to.eql(1);
+					expect(events[0].attachments).to.be.a('array');
+					expect(events[0].attachments.length).to.eql(2);
+					expect(events[0].attachments[0].fallback).to.eql('GitHub Code Delivered');
+					expect(events[0].attachments[0].title).to.eql('GitHub Code Delivered');
+					expect(events[0].attachments[0].title_link).to.eql('CommitUrl');
+					expect(events[0].attachments[0].fields.length).to.eql(3);
+					expect(events[0].attachments[0].fields[0].title).to.eql('Author');
+					expect(events[0].attachments[0].fields[0].value).to.eql('Joe');
+					expect(events[0].attachments[0].fields[1].title).to.eql('Repository');
+					expect(events[0].attachments[0].fields[1].value).to.eql('RepoName');
+					expect(events[0].attachments[0].fields[2].title).to.eql('Comment');
+					expect(events[0].attachments[0].fields[2].value).to.eql(i18n.__('github.subscribe.alert.no.comment'));
+					expect(events[0].attachments[1].fields[0].title).to.eql('Author');
+					expect(events[0].attachments[1].fields[0].value).to.eql('Jane');
+					expect(events[0].attachments[1].fields[1].title).to.eql('Repository');
+					expect(events[0].attachments[1].fields[1].value).to.eql('RepoName');
+					expect(events[0].attachments[1].fields[2].title).to.eql('Comment');
+					expect(events[0].attachments[1].fields[2].value).to.eql('JaneMessage');
+				});
+				// Simulate the event sent from Github.  Should trigger listener above.
+				webhookRewire.__get__('handleWebhook')(room.robot, request, null);
+				return portendCalled;
 			});
-			// Simulate the event sent from Github.  Should trigger listener above.
-			webhookRewire.__get__('handleWebhook')(room.robot, request, null);
-			return portendCalled;
 		});
 	});
 
@@ -137,48 +161,51 @@ describe('Interacting with Github Subscriptions via Reg Ex', function() {
 
 	context('Pull request event received', function() {
 		it('should emit the pull request event attachment', function() {
-			let request = {
-				headers: {
-					'x-github-event': 'pull_request'
-				},
-				body: JSON.stringify({
-					action: 'opened',
-					pull_request: {
-						title: 'EventTitle',
-						base: {
-							repo: {
-								full_name: 'RepoName'
-							}
+			// First subscribe for github events.
+			room.user.say('mimiron', '@hubot github subscribe user/repoNoWebhooks');
+			return portend.once(room.robot, 'ibmcloud.formatter').then(events => {
+				expect(events.length).to.eql(1);
+				expect(events[0].message).to.be.a('string');
+				expect(events[0].message).to.eql(i18n.__('github.subscribe.create.success'));
+			}).then(result => {
+				let request = {
+					headers: {
+						'x-github-event': 'pull_request'
+					},
+					body: {
+						repository: {
+							name: 'RepoName',
+							hooks_url: 'hooks_url'
 						},
-						user: {
-							login: 'Joe'
-						},
-						_links: {
-							self: 'EventURL'
+						action: 'opened',
+						pull_request: {
+							title: 'EventTitle',
+							base: { repo: { name: 'RepoName' } },
+							user: { login: 'Joe' },
+							html_url: 'EventUrl'
 						}
 					}
-				})
-			};
-			// Start listening for emits.
-			let portendCalled = portend.once(room.robot, 'ibmcloud.formatter').then(events => {
-				expect(events.length).to.eql(1);
-				expect(events[0].attachments).to.be.a('array');
-				expect(events[0].attachments.length).to.eql(1);
-				expect(events[0].attachments[0].fallback).to.eql('GitHub event detected: pull request.');
-				expect(events[0].attachments[0].title).to.eql('GitHub event detected: pull request.');
-				expect(events[0].attachments[0].fields.length).to.eql(4);
-				expect(events[0].attachments[0].fields[0].title).to.eql('Title');
-				expect(events[0].attachments[0].fields[0].value).to.eql('EventTitle');
-				expect(events[0].attachments[0].fields[1].title).to.eql('Repository');
-				expect(events[0].attachments[0].fields[1].value).to.eql('RepoName');
-				expect(events[0].attachments[0].fields[2].title).to.eql('Originator');
-				expect(events[0].attachments[0].fields[2].value).to.eql('Joe');
-				expect(events[0].attachments[0].fields[3].title).to.eql('URL');
-				expect(events[0].attachments[0].fields[3].value).to.eql('EventURL');
+				};
+				// Start listening for emits.
+				let portendCalled = portend.once(room.robot, 'ibmcloud.formatter').then(events => {
+					expect(events.length).to.eql(1);
+					expect(events[0].attachments).to.be.a('array');
+					expect(events[0].attachments.length).to.eql(1);
+					expect(events[0].attachments[0].fallback).to.eql('GitHub Pull Request');
+					expect(events[0].attachments[0].title).to.eql('GitHub Pull Request');
+					expect(events[0].attachments[0].title_link).to.eql('EventUrl');
+					expect(events[0].attachments[0].fields.length).to.eql(3);
+					expect(events[0].attachments[0].fields[0].title).to.eql('Originator');
+					expect(events[0].attachments[0].fields[0].value).to.eql('Joe');
+					expect(events[0].attachments[0].fields[1].title).to.eql('Repository');
+					expect(events[0].attachments[0].fields[1].value).to.eql('RepoName');
+					expect(events[0].attachments[0].fields[2].title).to.eql('Comment');
+					expect(events[0].attachments[0].fields[2].value).to.eql('EventTitle');
+				});
+				// Simulate the event sent from Github.  Should trigger listener above.
+				webhookRewire.__get__('handleWebhook')(room.robot, request, null);
+				return portendCalled;
 			});
-			// Simulate the event sent from Github.  Should trigger listener above.
-			webhookRewire.__get__('handleWebhook')(room.robot, request, null);
-			return portendCalled;
 		});
 	});
 
@@ -188,37 +215,51 @@ describe('Interacting with Github Subscriptions via Reg Ex', function() {
 
 	context('Issue open event received', function() {
 		it('should emit the issue open event attachment', function() {
-			let request = {
-				headers: {
-					'x-github-event': 'issue'
-				},
-				body: JSON.stringify({
-					action: 'opened',
-					issue: {
-						title: 'EventTitle',
-						body: 'EventBody',
-						url: 'EventURL'
-					}
-				})
-			};
-			// Start listening for emits.
-			let portendCalled = portend.once(room.robot, 'ibmcloud.formatter').then(events => {
+			// First subscribe for github events.
+			room.user.say('mimiron', '@hubot github subscribe user/repoNoWebhooks');
+			return portend.once(room.robot, 'ibmcloud.formatter').then(events => {
 				expect(events.length).to.eql(1);
-				expect(events[0].attachments).to.be.a('array');
-				expect(events[0].attachments.length).to.eql(1);
-				expect(events[0].attachments[0].fallback).to.eql('GitHub event detected: issue opened.');
-				expect(events[0].attachments[0].title).to.eql('GitHub event detected: issue opened.');
-				expect(events[0].attachments[0].fields.length).to.eql(3);
-				expect(events[0].attachments[0].fields[0].title).to.eql('Title');
-				expect(events[0].attachments[0].fields[0].value).to.eql('EventTitle');
-				expect(events[0].attachments[0].fields[1].title).to.eql('Description');
-				expect(events[0].attachments[0].fields[1].value).to.eql('EventBody');
-				expect(events[0].attachments[0].fields[2].title).to.eql('URL');
-				expect(events[0].attachments[0].fields[2].value).to.eql('EventURL');
+				expect(events[0].message).to.be.a('string');
+				expect(events[0].message).to.eql(i18n.__('github.subscribe.create.success'));
+			}).then(result => {
+				let request = {
+					headers: {
+						'x-github-event': 'issues'
+					},
+					body: {
+						repository: {
+							name: 'RepoName',
+							hooks_url: 'hooks_url'
+						},
+						action: 'opened',
+						issue: {
+							title: 'EventTitle',
+							user: { login: 'Joe' },
+							body: 'EventBody',
+							html_url: 'EventUrl'
+						}
+					}
+				};
+				// Start listening for emits.
+				let portendCalled = portend.once(room.robot, 'ibmcloud.formatter').then(events => {
+					expect(events.length).to.eql(1);
+					expect(events[0].attachments).to.be.a('array');
+					expect(events[0].attachments.length).to.eql(1);
+					expect(events[0].attachments[0].fallback).to.eql('GitHub Issue Opened');
+					expect(events[0].attachments[0].title).to.eql('GitHub Issue Opened');
+					expect(events[0].attachments[0].title_link).to.eql('EventUrl');
+					expect(events[0].attachments[0].fields.length).to.eql(3);
+					expect(events[0].attachments[0].fields[0].title).to.eql('Originator');
+					expect(events[0].attachments[0].fields[0].value).to.eql('Joe');
+					expect(events[0].attachments[0].fields[1].title).to.eql('Repository');
+					expect(events[0].attachments[0].fields[1].value).to.eql('RepoName');
+					expect(events[0].attachments[0].fields[2].title).to.eql('Comment');
+					expect(events[0].attachments[0].fields[2].value).to.eql('EventTitle');
+				});
+				// Simulate the event sent from Github.  Should trigger listener above.
+				webhookRewire.__get__('handleWebhook')(room.robot, request, null);
+				return portendCalled;
 			});
-			// Simulate the event sent from Github.  Should trigger listener above.
-			webhookRewire.__get__('handleWebhook')(room.robot, request, null);
-			return portendCalled;
 		});
 	});
 

@@ -22,7 +22,6 @@ const validService1 = 'validService1';
 module.exports = {
 
 	setupMockery: function() {
-		console.log('CRAIG DEBUG: SETTING UP MOCKERY FOR CF');
 		let cfScope = nock(endpoint)
 			.persist();
 

@@ -20,6 +20,7 @@ const path = require('path');
 const request = require('request');
 const TAG = path.basename(__filename);
 
+const GITHUB_ALERT_CONTEXT = 'GITHUB_ALERT_CONTEXT';
 const webhookHost = process.env.VCAP_APP_HOST || process.env.IP || 'localhost';
 const webhookPort = process.env.VCAP_APP_PORT || process.env.PORT || 3000;
 const webhookUrl = 'http://' + webhookHost + ':' + webhookPort + '/github/webhook';
@@ -253,6 +254,17 @@ function deleteWebhook(robot, res, url) {
 			robot.logger.info(`${TAG}: Success deleting subscription: ${url}`);
 			let message = i18n.__('github.subscribe.delete.success');
 			robot.emit('ibmcloud.formatter', { response: res, message: message});
+			// Clean up the reference in the robot brain.
+			let githubAlerts = robot.brain.get(GITHUB_ALERT_CONTEXT);
+			if (githubAlerts !== null) {
+				for (let i = 0; i < githubAlerts.length; i++) {
+					let alert = githubAlerts[i];
+					if (alert.repo === url) {
+						githubAlerts.splice(i, 1);
+						break;
+					}
+				}
+			}
 		}
 		else {
 			// Didn't get the expected repsonse.
@@ -298,8 +310,19 @@ function createWebHook(robot, res, user, repo) {
 		if (response.statusCode === 201) {
 			// Success.
 			robot.logger.info(`${TAG}: Success creating subscription: ${url}`);
+			robot.logger.debug(`${TAG}: Response to create webhook: ${body}`);
 			let message = i18n.__('github.subscribe.create.success');
 			robot.emit('ibmcloud.formatter', { response: res, message: message});
+			// Store the res object for future use when alerts come in, so they can
+			// be sent to the same location where the alert was enabled.
+			let githubAlerts = robot.brain.get(GITHUB_ALERT_CONTEXT);
+			if (githubAlerts === null) {
+				githubAlerts = [];
+				robot.brain.set(GITHUB_ALERT_CONTEXT, githubAlerts);
+			}
+			body = JSON.parse(body);
+			robot.logger.debug(`${TAG}: Adding record to the brain for future alerts, repo: ${body.url}`);
+			githubAlerts.push({ res: res, repo: body.url});
 		}
 		else {
 			// Didn't get the expected repsonse.

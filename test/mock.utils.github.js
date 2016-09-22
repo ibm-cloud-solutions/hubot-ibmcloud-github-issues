@@ -28,7 +28,7 @@ module.exports = {
 		githubScope.get('/repos/user/repoNoWebhooks/hooks')
 			.reply(200, []);
 		githubScope.post('/repos/user/repoNoWebhooks/hooks')
-			.reply(201, []);
+			.reply(201, { url: 'hooks_url' });
 
 		// Testing a subscription request that fails due to an existing one.
 		githubScope.get('/repos/user/repoExistingWebhooks/hooks')
@@ -41,7 +41,7 @@ module.exports = {
 		githubScope.get('/repos/user/repoOtherWebhooks/hooks')
 			.reply(200, [{config: {url: 'http://some.other/webhook'}}]);
 		githubScope.post('/repos/user/repoOtherWebhooks/hooks')
-			.reply(201, []);
+			.reply(201, { url: 'hooks_url' });
 
 		// Testing a failure to retrieve webhooks from GitHub.
 		githubScope.get('/repos/user/connectionError/hooks')
