@@ -37,48 +37,16 @@ const i18n = new (require('i18n-2'))({
 // At some point we need to toggle this setting based on some user input.
 i18n.setLocale('en');
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const app = express();
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
-const host = (process.env.VCAP_APP_HOST || 'localhost');
-const port = (process.env.PORT || process.env.VCAP_APP_PORT || 8080);
-
-// ------------------------------------------------------------------------------
-// Set up the listener
-// ------------------------------------------------------------------------------
-app.listen(port, host, function() {
-	// print a message when the server starts listening
-	console.log('\n=================================================='
-		+ '\n= Starting at: http://' + host + ':' + port
-		+ '\n==================================================');
-});
-
 module.exports = function(robot) {
-
-	app.post('/github/webhook', function(req, res) {
-		// Close the loop with the sender.
-		res.send('OK');
-		handleWebhook(robot, req);
-	});
-
-	app.get('/', function(req, res) {
-		// Close the loop with the sender.
-		res.send('OK');
-	});
-
-/*
 	// --------------------------------------------------------------
 	// Listen for webhook events from Github.
 	// --------------------------------------------------------------
 	robot.router.post('/github/webhook', (req, res) => {
 		// Close the loop with the sender.
+		console.log('Inside robot.router.post');
 		res.send('OK');
 		handleWebhook(robot, req);
 	});
-	*/
-
 };
 
 // -------------------------------------------

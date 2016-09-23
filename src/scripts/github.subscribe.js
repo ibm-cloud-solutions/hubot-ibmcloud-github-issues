@@ -21,11 +21,15 @@ const request = require('request');
 const TAG = path.basename(__filename);
 
 const GITHUB_ALERT_CONTEXT = 'GITHUB_ALERT_CONTEXT';
-const webhookHost = process.env.VCAP_APP_HOST || process.env.IP || 'localhost';
-const webhookPort = process.env.VCAP_APP_PORT || process.env.PORT || 3000;
-const webhookUrl = 'http://' + webhookHost + ':' + webhookPort + '/github/webhook';
-console.log(`${TAG}: webhookUrl: ${webhookUrl}`);
 const githubHost = process.env.HUBOT_GITHUB_DOMAIN || 'api.github.com';
+const port = process.env.PORT || 3000;
+let hostPort = 'localhost:' + port;
+let vcap_app = process.env.VCAP_APPLICATION;
+if (vcap_app) {
+	vcap_app = JSON.parse(process.env.VCAP_APPLICATION);
+	hostPort = vcap_app.application_uris[0] + ':' + port;
+}
+const webhookUrl = 'http://' + hostPort + '/github/webhook';
 
 // --------------------------------------------------------------
 // i18n (internationalization)
@@ -98,7 +102,6 @@ module.exports = function(robot) {
 			}
 			// Webhookds exist, so search for our match.
 			else if (webhookArray.length >= 1) {
-				let webhookUrl = `http://${webhookHost}:${webhookPort}/github/webhook`;
 				let foundWebhook = false;
 				for (let i = 0; i < webhookArray.length; i++) {
 					let webhook = webhookArray[i];
@@ -164,8 +167,8 @@ module.exports = function(robot) {
 		robot.logger.info(`${TAG}: Unsubscribe user=${user}, repo=${repo}.`);
 		// Get a list of all the webhooks defined in the repo.
 		getWebhookList(robot, res, user, repo, function(webhookArray) {
-			robot.logger.debug(`${TAG}: list of webhooks:`);
-			robot.logger.debug(webhookArray);
+			robot.logger.debug(`${TAG}: webhook url: ${webhookUrl}`);
+			robot.logger.debug(`${TAG}: list of webhooks: ${JSON.stringify(webhookArray)}`);
 			// If the response is null, there was an error.
 			if (!webhookArray) {
 				let message = i18n.__('github.subscribe.error.fetching.webhooks', user, repo);
@@ -178,7 +181,6 @@ module.exports = function(robot) {
 			}
 			// Webhookds exist, so search for our match.
 			else if (webhookArray.length === 1) {
-				let webhookUrl = `http://${webhookHost}:${webhookPort}/github/webhook`;
 				let foundWebhook = false;
 				for (let i = 0; i < webhookArray.length; i++) {
 					let webhook = webhookArray[i];
@@ -248,7 +250,6 @@ function deleteWebhook(robot, res, url) {
 
 	// Delete the webhook from Github.
 	request(options, function(error, response, body) {
-		console.log(JSON.stringify(response));
 		if (response.statusCode === 204) {
 			// Success.
 			robot.logger.info(`${TAG}: Success deleting subscription: ${url}`);
