@@ -8,13 +8,13 @@
     "type": "git"
   },
   "scripts": {
-	"start": "source config/env && hubot -a shell",
-	"slack": "source config/env && hubot -a slack",
+    "start": "source config/env && hubot -a shell",
+    "slack": "source config/env && hubot -a slack",
     "facebook": "source config/env && hubot -a fb",
     "lint": "eslint src/**/*.js test/*.js index.js",
     "postinstall": "initDb src/nlc/NLC.json",
     "test": ". test/.env && mocha test",
-	"coverage": ". test/.env && istanbul cover -x '**/coverage/**' -x '**/tools/**' --include-all-sources --report lcov --report cobertura --report text --dir ./gh-pages/coverage _mocha -- test"
+    "coverage": ". test/.env && istanbul cover -x '**/coverage/**' -x '**/tools/**' --include-all-sources --report lcov --report cobertura --report text --dir ./gh-pages/coverage _mocha -- test"
  },
   "keywords": [
     "hubot",
@@ -45,7 +45,7 @@
     "istanbul": "0.4.0",
     "mocha": "^2.4.5",
     "nock": "^8.0.0",
-	"portend": "^1.0.0",
+    "portend": "^1.0.0",
     "rewire": "2.5.1"
   },
   "peerDependencies": {
