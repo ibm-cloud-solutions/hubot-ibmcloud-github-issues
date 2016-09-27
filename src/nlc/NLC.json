@@ -2,14 +2,14 @@
     "version": "0.0.1",
     "classes": [
         {
-            "class": "github.issues.help",
-            "description": "Help with GitHub issues",
-            "emittarget": "github.issues.help",
+            "class": "github.help",
+            "description": "Help with GitHub",
+            "emittarget": "github.help",
             "texts": [
-				"Help me with github issues.",
-		  		"Can you help me with GitHub issues?",
+				"Help me with github.",
+		  		"Can you help me with GitHub?",
 		  		"How can I create a github issue when a crash occurs.",
-		  		"help github issues"
+		  		"How do I monitor Github events?"
             ]
         },
         {
@@ -46,6 +46,51 @@
 	 				 "prompt": "OK. What is the username associated with the github repository?"
 	 			}
 			 ]
-        }
+        },
+		{
+			"class": "github.subscribe",
+			"description": "Start monitoring GitHub events",
+			"emittarget": "github.subscribe",
+			"texts": [
+				"Help me monitor GitHub events",
+				"Can you help me monitor for GitHub events?",
+				"Monitor GitHub events",
+				"Subscribe to GitHub events"
+			],
+			"parameters" : [
+				{
+					"name": "repo",
+					"type": "reponame",
+					 "prompt": "OK. What is the repository you want to open issues against?"
+				},
+	 			{
+	 				"name": "user",
+	 				"type": "repouser",
+	 				 "prompt": "OK. What is the username associated with the github repository?"
+	 			}
+			 ]
+		},
+		{
+			"class": "github.unsubscribe",
+			"description": "Stop monitoring GitHub events",
+			"emittarget": "github.unsubscribe",
+			"texts": [
+				"Stop monitoring GitHub events.",
+				"Can you help me stop monitoring GitHub events?",
+				"Unsububscribe to GitHub events"
+			],
+			"parameters" : [
+				{
+					"name": "repo",
+					"type": "reponame",
+					 "prompt": "OK. What is the repository you want to open issues against?"
+				},
+	 			{
+	 				"name": "user",
+	 				"type": "repouser",
+	 				 "prompt": "OK. What is the username associated with the github repository?"
+	 			}
+			 ]
+		}
     ]
 }

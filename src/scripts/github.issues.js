@@ -10,9 +10,6 @@
 //	 HUBOT_GITHUB_DOMAIN The domain for the github repo (defaults to github.com)
 //	 HUBOT_GITHUB_TOKEN the github access token that will be used for creating issues
 //
-// Commands:
-//   hubot issue help - Show available commands in the issue category.
-//
 // Author:
 //	nsandona
 //
@@ -59,7 +56,7 @@ module.exports = function(robot) {
 		stopIssueCreation(res);
 	});
 
-	robot.respond(/issue\s+stop\s+creation/i, {id: 'github.issues.stop'}, res => {
+	robot.respond(/github\sissue\s+stop\s+creation/i, {id: 'github.issues.stop'}, res => {
 		robot.logger.debug(`${TAG}: github.issues.stop Reg Ex match.`);
 		stopIssueCreation(res);
 	});
@@ -78,24 +75,6 @@ module.exports = function(robot) {
 			robot.emit('ibmcloud.formatter', { response: res, message: message});
 		}
 	};
-
-	robot.on('github.issues.help', (res) => {
-		robot.logger.debug(`${TAG}: github.issues.help Natural Language match.`);
-		help(res);
-	});
-
-	robot.respond(/issue help|issues help/i, {id: 'github.issues.help'}, (res) => {
-		robot.logger.debug(`${TAG}: github.issues.help Reg Ex match.`);
-		help(res);
-	});
-
-	function help(res) {
-		robot.logger.debug(`${TAG}: github.issues.help res.message.text=${res.message.text}.`);
-		let help = robot.name + ' issue create against [name]/[repo] when apps crash - ' + i18n.__('help.github.issues.create') + '\n'
-		+ robot.name + ' issue stop creation - ' + i18n.__('help.github.issues.stop') + '\n';
-		robot.emit('ibmcloud.formatter', { response: res, message: '\n' + help});
-	};
-
 
 	robot.on('github.issues.open', (res, parameters) => {
 		robot.logger.debug(`${TAG}: github.issues.open Natural Language match.`);
@@ -122,7 +101,7 @@ module.exports = function(robot) {
 		}
 	});
 
-	robot.respond(/issue\s+(create|open)\s+(against|in|on) ([^/]+)\/([\w-_]+).*crash(es|ed)?/i, {id: 'github.issues.open'}, res => {
+	robot.respond(/github\sissue\s+(create|open)\s+(against|in|on) ([^/]+)\/([\w-_]+).*crash(es|ed)?/i, {id: 'github.issues.open'}, res => {
 		robot.logger.debug(`${TAG}: github.issues.open Reg Ex match.`);
 		const user = res.match[3];
 		const repo = res.match[4];

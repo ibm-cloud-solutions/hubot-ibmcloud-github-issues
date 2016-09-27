@@ -13,6 +13,8 @@ const expect = require('chai').expect;
 const mockUtils = require('./mock.utils.cf.js');
 const mockESUtils = require('./mock.utils.es.js');
 const mockGithubUtils = require('./mock.utils.github.js');
+const portend = require('portend');
+const rewire = require('rewire');
 
 const i18n = new (require('i18n-2'))({
 	locales: ['en'],
@@ -26,12 +28,9 @@ const i18n = new (require('i18n-2'))({
 // At some point we need to toggle this setting based on some user input.
 i18n.setLocale('en');
 
-// Leverage rewire to gain access to internal functions.
-const rewire = require('rewire');
-
 // Passing arrow functions to mocha is discouraged: https://mochajs.org/#arrow-functions
 // return promises from mocha tests rather than calling done() - http://tobyho.com/2015/12/16/mocha-with-promises/
-describe('Interacting with Github Issue Creation via Reg Ex', function() {
+describe('Interacting with Github Issues via Reg Ex', function() {
 
 	let room;
 	let cf;
@@ -43,82 +42,43 @@ describe('Interacting with Github Issue Creation via Reg Ex', function() {
 		mockGithubUtils.setupMockery();
 		// initialize cf, hubot-test-helper doesn't test Middleware
 		cf = require('hubot-cf-convenience');
-		issuesRewire = rewire(path.resolve(__dirname, '..', 'src', 'scripts', 'issues'));
+		issuesRewire = rewire(path.resolve(__dirname, '..', 'src', 'scripts', 'github.issues'));
 		return cf.promise.then();
 	});
 
 	beforeEach(function() {
 		room = helper.createRoom();
-		// Force all emits into a reply.
-		room.robot.on('ibmcloud.formatter', function(event) {
-			try {
-				if (event.message) {
-					event.response.reply(event.message);
-				}
-				else {
-					event.response.send({attachments: event.attachments});
-				}
-			}
-			catch (error) {
-				console.log(error);
-				console.log(JSON.stringify(event));
-			}
-		});
 	});
 
 	afterEach(function() {
 		room.destroy();
 	});
 
-	context('user calls `issue help`', function() {
-		beforeEach(function() {
-			return room.user.say('mimiron', '@hubot issue help');
-		});
-
-		it('should respond with the help', function() {
-			expect(room.messages.length).to.eql(2);
-			expect(room.messages[1][1]).to.be.a('string');
-			let help = 'hubot issue create against [name]/[repo] when apps crash - ' + i18n.__('help.github.issues.create') + '\n'
-				+ 'hubot issue stop creation - ' + i18n.__('help.github.issues.stop') + '\n';
-			expect(room.messages[1]).to.eql(['hubot', '@mimiron \n' + help]);
-		});
-	});
-
-	context('user calls `issues help`', function() {
-		beforeEach(function() {
-			return room.user.say('mimiron', '@hubot issues help');
-		});
-
-		it('should respond with the help', function() {
-			expect(room.messages.length).to.eql(2);
-			let help = 'hubot issue create against [name]/[repo] when apps crash - ' + i18n.__('help.github.issues.create') + '\n'
-				+ 'hubot issue stop creation - ' + i18n.__('help.github.issues.stop') + '\n';
-			expect(room.messages[1]).to.eql(['hubot', '@mimiron \n' + help]);
-			expect(room.messages[1][1]).to.be.a('string');
-		});
-	});
-
-	context('user calls `issue stop creation`', function() {
-		beforeEach(function() {
-			return room.user.say('mimiron', '@hubot issue stop creation');
-		});
-
+	context('user calls `github issue stop creation`', function() {
 		it('should respond with the already stopped', function() {
-			expect(room.messages.length).to.eql(2);
-			expect(room.messages[1]).to.eql(['hubot', '@mimiron ' + i18n.__('github.issues.stop.already')]);
+			room.user.say('mimiron', '@hubot github issue stop creation');
+			return portend.once(room.robot, 'ibmcloud.formatter').then(events => {
+				expect(events.length).to.eql(1);
+				expect(events[0].message).to.be.a('string');
+				expect(events[0].message).to.eql(i18n.__('github.issues.stop.already'));
+			});
 		});
 	});
 
-	context('user calls `create an issue`', function() {
-
+	context('user calls `github create an issue`', function() {
 		it('should respond with the creating issues on crashes', function() {
-			return room.user.say('mimiron', '@hubot issue create against github.com/user/repo when apps crash')
-			.then(() => {
-				expect(room.messages[1]).to.eql(['hubot', '@mimiron ' + i18n.__('github.issues.will.open.for.crash', 'github.com', 'user')]);
-				return room.user.say('mimiron', '@hubot issue stop creation');
-			}).then(() => {
-				expect(room.messages.length).to.eql(4);
-				expect(room.messages[3]).to.eql(['hubot', '@mimiron ' + i18n.__('github.issues.stop.success')]);
+			room.user.say('mimiron', '@hubot github issue create against github.com/user/repo when apps crash');
+			return portend.once(room.robot, 'ibmcloud.formatter').then(events => {
+				expect(events.length).to.eql(1);
+				expect(events[0].message).to.be.a('string');
+				expect(events[0].message).to.eql(i18n.__('github.issues.will.open.for.crash', 'github.com', 'user'));
+			}).then(result => {
+				room.user.say('mimiron', '@hubot github issue stop creation');
+				return portend.once(room.robot, 'ibmcloud.formatter').then(events => {
+					expect(events.length).to.eql(1);
+					expect(events[0].message).to.be.a('string');
+					expect(events[0].message).to.eql(i18n.__('github.issues.stop.success'));
+				});
 			});
 		});
 	});

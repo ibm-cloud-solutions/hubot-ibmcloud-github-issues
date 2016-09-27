@@ -49,21 +49,6 @@ describe('Interacting with Github Issue Creation via Natural Language', function
 		room.destroy();
 	});
 
-
-	context('user calls `issues help`', function() {
-		it('should respond with the help', function(done) {
-			room.robot.on('ibmcloud.formatter', (event) => {
-				expect(event.message).to.be.a('string');
-				expect(event.message).to.contain('hubot issue create against [name]/[repo] when apps crash');
-				expect(event.message).to.contain('hubot issue stop creation');
-				done();
-			});
-
-			const res = { message: {text: 'Please help me with issue creation on app crash', user: {id: 'anId'}}, response: room };
-			room.robot.emit('github.issues.help', res, {});
-		});
-	});
-
 	context('user calls `issue stop creation`', function() {
 		it('should respond with the already stopped', function(done) {
 			room.robot.on('ibmcloud.formatter', (event) => {

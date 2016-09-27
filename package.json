@@ -14,8 +14,8 @@
     "lint": "eslint src/**/*.js test/*.js index.js",
     "postinstall": "initDb src/nlc/NLC.json",
     "test": ". test/.env && mocha test",
-    "coverage": ". test/.env && istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
-  },
+    "coverage": ". test/.env && istanbul cover -x '**/coverage/**' -x '**/tools/**' --include-all-sources --report lcov --report cobertura --report text --dir ./gh-pages/coverage _mocha -- test"
+ },
   "keywords": [
     "hubot",
     "hubot-scripts",
@@ -45,6 +45,7 @@
     "istanbul": "0.4.0",
     "mocha": "^2.4.5",
     "nock": "^8.0.0",
+    "portend": "^1.0.0",
     "rewire": "2.5.1"
   },
   "peerDependencies": {
@@ -65,6 +66,7 @@
   ],
   "dependencies": {
     "dateformat": "^1.0.12",
-    "github": "^0.2.4"
+    "github": "^0.2.4",
+    "request": "^2.74.0"
   }
 }
